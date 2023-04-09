@@ -9,14 +9,14 @@ function [] = motor(a)
     writeDigitalPin(a,in3,0);
     writeDigitalPin(a,in4,0);
 
-    for i = 0:3 %for 3 seconds  
-        % Set motors to max speed
+    for i = 0:1 %for 1/2 second  
+        % Set motors to 3/5 speed
         writePWMVoltage(a,enB,3);
     
         % Turn on motor 
         writeDigitalPin(a,in3,1);
         writeDigitalPin(a,in4,0);
-        pause(0.1)
+        pause(0.5)
     end
     writeDigitalPin(a,in3,0);
     writeDigitalPin(a,in4,0);
