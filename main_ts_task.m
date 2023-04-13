@@ -21,6 +21,10 @@ for i = 1:1000
     end
     pause(0.01);
 end
-% touchscreen();
-% 
-% motor(a);
+for j = 1:1000
+    t = touchscreen();
+    if t == 1
+        motor(a);
+    end
+    pause(0.01);
+end
