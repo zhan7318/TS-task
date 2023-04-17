@@ -1,6 +1,5 @@
-function [mouse] = touchscreen()
+function [mouse] = touchscreen(color,radius)
 %%Touch screen task
-
 %1.When the program starts a maximized blank touch screen should appear
 %   (black)
 %2. Once a new voltage is detected, activate a new screen blank, no axes,
@@ -19,12 +18,12 @@ fig = figure('Position',screen_size);
 set(fig,'Color',[1 1 1]);
 
 % generates a red circle at the center of screen
-radius = 100; % radius of circle
+r = radius; % radius of circle
 xco = round(screen_size(3)/2);
 yco = round(screen_size(4)/2);
 xlim([0 screen_size(3)]);
 ylim([0 screen_size(4)]);
-c = rectangle('Position',[xco-radius yco-radius radius*2 radius*2],'Curvature',[1 1],'FaceColor',[1 0 0], 'EdgeColor',[1 0 0]);
+c = rectangle('Position',[xco-r yco-r r*2 r*2],'Curvature',[1 1],'FaceColor',color, 'EdgeColor',color);
 axis equal
 
 % makes axis white, removes menu bar
@@ -34,11 +33,13 @@ fig.DockControls = 'off';
 
 % detect if mouse is within red circle
 [x,y] = ginput(1);
+cla; %clear current axis to get rid fo black lines
+set(gca,'XColor','none','YColor','none');
 dist = sqrt((x-xco)^2 + (y-yco)^2);
-if dist <= radius
+if dist <= r
     % mouse inside circle
     mouse = 1;
-    delete(c);
+%     delete(c);
 else 
     mouse = 0;
 end
