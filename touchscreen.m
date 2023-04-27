@@ -1,4 +1,4 @@
-function [mouse,coordinates]  = touchscreen(color,radius,position) 
+function [mouse,x,y]  = touchscreen(color,radius,position) 
 %%Touch screen task
 %1.When the program starts a maximized blank touch screen should appear
 %   (black)
@@ -21,15 +21,13 @@ set(fig,'Color',[1 1 1]);
 r = radius; % radius of circle
 xco = round(screen_size(3)/2);
 yco = round(screen_size(4)/2);
-xlim([0 screen_size(3)]);
-ylim([0 screen_size(4)])
 
 % variables determining position 
 posx = 0;
 posy = 0;
 % possible shifts in position are 1/3 of screen size
 shiftx = round(screen_size(3)/3);
-shifty = round(screen_size(4)/3)
+shifty = round(screen_size(4)/3);
 % value of position determines position within a 3x3 matrix on the figure
 % for example 0 means the circle is on the northeast side of the screen and
 % 4 means its in the center
@@ -65,14 +63,17 @@ end
 
 % depending on the position parameter, change 'Position' of circle
 c = rectangle('Position',[xco-posx yco-posy r*2 r*2],'Curvature',[1 1],'FaceColor',color, 'EdgeColor',color);
-% axis equal
+axis equal
+xlim([0 screen_size(3)]);
+ylim([0 screen_size(4)]);
 
-% makes axis white, removes menu bar
-% set(gca,'XColor','w','YColor','w');
-% fig.MenuBar = 'none';
-% fig.DockControls = 'off';
+% makes axis white, removes menu bar, hides cursor
+set(gca,'XColor','w','YColor','w');
+fig.MenuBar = 'none';
+fig.DockControls = 'off';
+set(fig, 'Pointer', 'custom', 'PointerShapeCData', NaN(16,16))
+
 % time = timer('StartDelay',5,'TimerFcn', @(~,~)[]); 
-
 % start(time)
 % detect if mouse is within red circle
 [x,y] = ginput(1);
@@ -85,9 +86,7 @@ c = rectangle('Position',[xco-posx yco-posy r*2 r*2],'Curvature',[1 1],'FaceColo
 % end
 
 set(gca,'XColor','none','YColor','none');
-dist = sqrt((x-xco+posx+r)^2 + (y-yco+posy-r)^2)
-xdist  = posx
-ydist = y-yco+posy-r
+dist = sqrt((x-xco+posx-r)^2 + (y-yco+posy-r)^2);
 if dist <= r
     % mouse inside circle
     mouse = 1;
@@ -96,5 +95,4 @@ else
     mouse = 0;
     set(c,'Visible','off');
 end
-coordinates = [x, y];
 end
