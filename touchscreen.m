@@ -1,4 +1,4 @@
-function [mouse,x,y]  = touchscreen(color,radius,position) 
+function [mouse,x,y]  = touchscreen(color,radius,pos) 
 %%Touch screen task
 %1.When the program starts a maximized blank touch screen should appear
 %   (black)
@@ -14,8 +14,8 @@ mouse = 0; % boolean variable determining if the mouse is within the circle
 
 %create a figure the same size as the screen with a white background
 screen_size = get(0,'ScreenSize');
-fig = figure('Position',screen_size);
-set(fig,'Color',[1 1 1]);
+% fig = figure('Position',screen_size);
+% set(fig,'Color',[1 1 1]);
 
 % generates a red circle at the center of screen
 r = radius; % radius of circle
@@ -29,33 +29,34 @@ posy = 0;
 shiftx = round(screen_size(3)/3);
 shifty = round(screen_size(4)/3);
 % value of position determines position within a 3x3 matrix on the figure
-% for example 0 means the circle is on the northeast side of the screen and
-% 4 means its in the center
-if position == 0
+% for example 1 means the circle is on the northeast side of the screen and
+% 5 means its in the center
+
+if pos == 1
     posx = r+shiftx ;
     posy = -shifty;
-elseif position == 1
+elseif pos == 2
     posx = r;
     posy = -shifty;
-elseif position == 2
+elseif pos == 3
     posx = -r-shiftx ;
     posy = -shifty;
-elseif position == 3
+elseif pos == 4
     posx = r+shiftx ;
     posy = r;
-elseif position == 4
+elseif pos == 5
     posx = r;
     posy = r;
-elseif position == 5
+elseif pos == 6
     posx = -r-shiftx ;
     posy = r;
-elseif position == 6
+elseif pos == 7
     posx = r+shiftx ;
     posy = r+shifty;
-elseif position == 7
+elseif pos == 8
     posx = r;
     posy = +r+shifty;
-elseif position == 8
+elseif pos == 9
     posx = -r-shiftx ;
     posy = r+shifty;
 end
@@ -63,27 +64,17 @@ end
 
 % depending on the position parameter, change 'Position' of circle
 c = rectangle('Position',[xco-posx yco-posy r*2 r*2],'Curvature',[1 1],'FaceColor',color, 'EdgeColor',color);
-axis equal
-xlim([0 screen_size(3)]);
-ylim([0 screen_size(4)]);
+% axis equal
+% xlim([0 screen_size(3)]);
+% ylim([0 screen_size(4)]);
 
 % makes axis white, removes menu bar, hides cursor
-set(gca,'XColor','w','YColor','w');
-fig.MenuBar = 'none';
-fig.DockControls = 'off';
-set(fig, 'Pointer', 'custom', 'PointerShapeCData', NaN(16,16))
+% set(gca,'XColor','w','YColor','w');
+% fig.MenuBar = 'none';
+% fig.DockControls = 'off';
+% set(fig, 'Pointer', 'custom', 'PointerShapeCData', NaN(16,16))
 
-% time = timer('StartDelay',5,'TimerFcn', @(~,~)[]); 
-% start(time)
-% detect if mouse is within red circle
 [x,y] = ginput(1);
-% if isempty(x) || isempty(y)
-%     x = [];
-%     y = [];
-% else
-%     stop(time);
-%     delete(time);
-% end
 
 set(gca,'XColor','none','YColor','none');
 dist = sqrt((x-xco+posx-r)^2 + (y-yco+posy-r)^2);
